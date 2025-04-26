@@ -35,11 +35,10 @@ GO
 
 CREATE TABLE {databaseOwner}{objectQualifier}Reservations
     (
-    [ID] INT NOT NULL IDENTITY (1,1)
+    [ID] INT NOT NULL IDENTITY (1,1) 
     [CreatedBy] INT NULL,
     [CreatedAt] DATETIME NULL,
     [IsActive] BIT NULL,
-    [ReservationID] NVARCHAR(50) NULL,
     [Name] NVARCHAR(100) NULL,
     [Email] NVARCHAR(100) NULL,
         CONSTRAINT CK_EmailFormat CHECK (
@@ -50,7 +49,6 @@ CREATE TABLE {databaseOwner}{objectQualifier}Reservations
             Phone LIKE '+[0-9]%' OR Phone LIKE '0[0-9]%'
         ),
     [Time] DATETIME NULL,
-    [Duration] INT NULL,
     [Quantity] INT NULL
     )  ON [PRIMARY]
      TEXTIMAGE_ON [PRIMARY]
