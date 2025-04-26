@@ -1,0 +1,52 @@
+﻿@inherits DotNetNuke.Web.Mvc.Framework.DnnWebViewPage<IEnumerable<Dnn.Bce.Dnn.Idopontfoglalas.Models.ReservationEntity>>
+
+@using System.Text.RegularExpressions
+@using DotNetNuke.Web.Mvc.Helpers
+@using DotNetNuke.Web.Client.ClientResourceManagement
+
+
+@{
+    ViewBag.Title = "Foglalások listája";
+}
+<div class="reservation-container">
+    <h2>Foglalások</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="no-reservations">
+            <p>Nincs még foglalás.</p>
+        </div>
+    }
+    else
+    {
+        <div class="reservation-table-wrapper">
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Név</th>
+                        <th>Email</th>
+                        <th>Telefonszám</th>
+                        <th>Időpont</th>
+                        <th>Mennyiség</th>
+                        <th>Aktív?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var reservation in Model)
+                    {
+                        <tr>
+                            <td>@reservation.ID</td>
+                            <td>@reservation.Name</td>
+                            <td>@reservation.Email</td>
+                            <td>@reservation.Phone</td>
+                            <td>@reservation.Time?.ToString("yyyy.MM.dd HH:mm")</td>
+                            <td>@reservation.Quantity</td>
+                            <td>@(reservation.IsActive == true ? "Igen" : "Nem")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
