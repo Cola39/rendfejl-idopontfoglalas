@@ -111,6 +111,8 @@
     <Compile Include="Models\ReservationEntity.cs" />
     <Compile Include="Models\Settings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\IReservationService.cs" />
+    <Compile Include="Services\ReservationService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Documentation\Documentation.css" />
