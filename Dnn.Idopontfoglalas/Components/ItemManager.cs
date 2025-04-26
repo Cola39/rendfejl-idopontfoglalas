@@ -19,21 +19,21 @@ namespace Dnn.Bce.Dnn.Idopontfoglalas.Components
 {
     interface IItemManager
     {
-        void CreateItem(Item t);
+        void CreateItem(ReservationEntity t);
         void DeleteItem(int itemId, int moduleId);
-        void DeleteItem(Item t);
-        IEnumerable<Item> GetItems(int moduleId);
-        Item GetItem(int itemId, int moduleId);
-        void UpdateItem(Item t);
+        void DeleteItem(ReservationEntity t);
+        IEnumerable<ReservationEntity> GetItems(int moduleId);
+        ReservationEntity GetItem(int itemId, int moduleId);
+        void UpdateItem(ReservationEntity t);
     }
 
     class ItemManager: ServiceLocator<IItemManager, ItemManager>, IItemManager
     {
-        public void CreateItem(Item t)
+        public void CreateItem(ReservationEntity t)
         {
             using (IDataContext ctx = DataContext.Instance())
             {
-                var rep = ctx.GetRepository<Item > ();
+                var rep = ctx.GetRepository<ReservationEntity > ();
                 rep.Insert(t);
             }
         }
@@ -44,42 +44,42 @@ namespace Dnn.Bce.Dnn.Idopontfoglalas.Components
             DeleteItem(t);
         }
 
-        public void DeleteItem(Item t)
+        public void DeleteItem(ReservationEntity t)
         {
             using (IDataContext ctx = DataContext.Instance())
             {
-                var rep = ctx.GetRepository<Item > ();
+                var rep = ctx.GetRepository<ReservationEntity > ();
                 rep.Delete(t);
             }
         }
 
-        public IEnumerable<Item> GetItems(int moduleId)
+        public IEnumerable<ReservationEntity> GetItems(int moduleId)
         {
-            IEnumerable<Item > t;
+            IEnumerable<ReservationEntity > t;
             using (IDataContext ctx = DataContext.Instance())
             {
-                var rep = ctx.GetRepository<Item > ();
+                var rep = ctx.GetRepository<ReservationEntity > ();
                 t = rep.Get(moduleId);
             }
             return t;
         }
 
-    public Item GetItem(int itemId, int moduleId)
+    public ReservationEntity GetItem(int itemId, int moduleId)
     {
-            Item t;
+            ReservationEntity t;
             using (IDataContext ctx = DataContext.Instance())
             {
-                var rep = ctx.GetRepository<Item > ();
+                var rep = ctx.GetRepository<ReservationEntity > ();
                 t = rep.GetById(itemId, moduleId);
             }
             return t;
         }
 
-        public void UpdateItem(Item t)
+        public void UpdateItem(ReservationEntity t)
         {
             using (IDataContext ctx = DataContext.Instance())
             {
-                var rep = ctx.GetRepository<Item > ();
+                var rep = ctx.GetRepository<ReservationEntity > ();
                 rep.Update(t);
             }
         }
