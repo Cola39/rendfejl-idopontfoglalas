@@ -1,23 +1,9 @@
-﻿/*
-' Copyright (c) 2025 Spongyabob Kft
-'  All rights reserved.
-' 
-' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
-' TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-' THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
-' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
-' DEALINGS IN THE SOFTWARE.
-' 
-*/
-using DotNetNuke.Web.Mvc.Framework.ActionFilters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Web.Mvc;
 using DotNetNuke.Web.Mvc.Framework.Controllers;
+using Dnn.Bce.Dnn.Idopontfoglalas.Models;
 using Dnn.Bce.Dnn.Idopontfoglalas.Services;
+using DotNetNuke.Entities.Users;
 
 namespace Dnn.Bce.Dnn.Idopontfoglalas.Controllers
 {
@@ -30,17 +16,65 @@ namespace Dnn.Bce.Dnn.Idopontfoglalas.Controllers
             _reservationService = new ReservationService();
         }
 
+        // GET: /Reservation/Index
         public ActionResult Index()
         {
-            bool isAdmin = User.IsInRole("Administrators");
-            int userId = User.UserID;
+            var currentUser = UserController.Instance.GetCurrentUserInfo();
+            bool isAdmin = currentUser.IsInRole("Administrators");
+            int userId = currentUser.UserID;
 
             var reservations = _reservationService.GetReservations(isAdmin, userId);
-
-            return View(reservations);
+            return View("Index", reservations);
         }
 
+        // GET: /Reservation/Create
+        public ActionResult Create()
+        {
+            return View("Create");
+        }
 
+        // POST: /Reservation/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(ReservationEntity reservation)
+        {
+            var currentUser = UserController.Instance.GetCurrentUserInfo();
+
+            if (ModelState.IsValid)
+            {
+                reservation.CreatedAt = DateTime.Now;
+                reservation.IsActive = true;
+                reservation.CreatedBy = currentUser.UserID;
+
+                _reservationService.CreateReservation(reservation);
+
+                return RedirectToAction("Index");
+            }
+
+            return View("Create", reservation);
+        }
+
+        // POST: /Reservation/Delete
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id)
+        {
+            var currentUser = UserController.Instance.GetCurrentUserInfo();
+            var reservation = _reservationService.GetReservationById(id);
+
+            if (reservation == null)
+            {
+                return HttpNotFound();
+            }
+
+            bool isAdmin = currentUser.IsInRole("Administrators");
+
+            if (reservation.CreatedBy == currentUser.UserID || isAdmin)
+            {
+                _reservationService.CancelReservation(id);
+            }
+
+            return RedirectToAction("Index");
+        }
     }
-
 }
