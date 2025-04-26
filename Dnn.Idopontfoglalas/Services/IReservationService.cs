@@ -10,7 +10,7 @@ namespace Dnn.Bce.Dnn.Idopontfoglalas.Services
     public interface IReservationService
     {
         ReservationEntity GetReservationById(int id);
-        IEnumerable<ReservationEntity> GetAllReservations();
+        IEnumerable<ReservationEntity> GetReservations(bool isAdmin, int userId);
         void CreateReservation(ReservationEntity reservation);
         bool IsAvailable(int id);
         void CancelReservation(int id);

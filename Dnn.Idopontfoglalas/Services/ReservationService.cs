@@ -19,14 +19,23 @@ namespace Dnn.Bce.Dnn.Idopontfoglalas.Services
             }
         }
 
-        public IEnumerable<ReservationEntity> GetAllReservations()
+        public IEnumerable<ReservationEntity> GetReservations(bool isAdmin, int userId)
         {
             using (var context = DataContext.Instance())
             {
                 var repo = context.GetRepository<ReservationEntity>();
-                return repo.Get().ToList();
+
+                if (isAdmin)
+                {
+                    return repo.Get().ToList();
+                }
+                else
+                {
+                    return repo.Find("WHERE CreatedBy = @0", userId).ToList();
+                }
             }
         }
+
 
         public void CreateReservation(ReservationEntity reservation)
         {
