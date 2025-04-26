@@ -12,6 +12,11 @@ IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwn
 DROP TABLE {databaseOwner}[{objectQualifier}Idopontfoglalas_Items]
 GO
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Reservations]') AND type in (N'U'))
+DROP TABLE {databaseOwner}[{objectQualifier}Reservations]
+GO
+
+
 CREATE TABLE {databaseOwner}{objectQualifier}Idopontfoglalas_Items
     (
     ItemId int NOT NULL IDENTITY (1, 1),
@@ -23,6 +28,30 @@ CREATE TABLE {databaseOwner}{objectQualifier}Idopontfoglalas_Items
     CreatedByUserId int NOT NULL,
     LastModifiedOnDate datetime NOT NULL,
     LastModifiedByUserId int NOT NULL
+    )  ON [PRIMARY]
+     TEXTIMAGE_ON [PRIMARY]
+GO
+
+
+CREATE TABLE {databaseOwner}{objectQualifier}Reservations
+    (
+    [ID] INT NOT NULL IDENTITY (1,1)
+    [CreatedBy] INT NULL,
+    [CreatedAt] DATETIME NULL,
+    [IsActive] BIT NULL,
+    [ReservationID] NVARCHAR(50) NULL,
+    [Name] NVARCHAR(100) NULL,
+    [Email] NVARCHAR(100) NULL,
+        CONSTRAINT CK_EmailFormat CHECK (
+            Email LIKE '%_@_%._%' AND Email NOT LIKE '%[^a-zA-Z0-9@._-]%'
+        ),
+    [Phone] NVARCHAR(20) NULL,
+        CONSTRAINT CK_PhoneFormat CHECK (
+            Phone LIKE '+[0-9]%' OR Phone LIKE '0[0-9]%'
+        ),
+    [Time] DATETIME NULL,
+    [Duration] INT NULL,
+    [Quantity] INT NULL
     )  ON [PRIMARY]
      TEXTIMAGE_ON [PRIMARY]
 GO
