@@ -32,4 +32,9 @@
 
         <div class="form-group mb-3">
             @Html.LabelFor(m => m.Quantity)
-            @Html.TextBoxFor(m => m.Quantity, new
+            @Html.TextBoxFor(m => m.Quantity, new { @class = "form-control", placeholder = "Mennyiség" })
+        </div>
+
+        <button type="submit" class="btn btn-primary">Foglalás mentése</button>
+    </form>
+</div>
