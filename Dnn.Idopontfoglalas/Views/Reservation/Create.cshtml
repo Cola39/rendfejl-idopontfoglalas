@@ -7,7 +7,7 @@
 <div class="reservation-create-container">
     <h2>Új foglalás</h2>
 
-    <form method="post" action="@Url.Action("Create", "Reservation")">
+    <form method="post" id=reservationForm">
         @Html.AntiForgeryToken()
 
         <div class="form-group mb-3">
@@ -38,3 +38,37 @@
         <button type="submit" class="btn btn-primary">Foglalás mentése</button>
     </form>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    var sf = $.ServicesFramework('@Dnn.ActiveModule.ModuleID');
+    var serviceUrl = sf.getServiceRoot('Dnn.Bce.Dnn.Idopontfoglalas');
+    var url = serviceUrl + "ReservationApiController/CreateReservation";
+
+    $('#reservationForm').submit(function (event) {
+        event.preventDefault();
+
+        var reservationData = {
+            Name: $("#Name").val(),
+            Email: $("#Email").val(),
+            Phone: $("#Phone").val(),
+            Time: $("#Time").val(),
+            Quantity: parseInt($("#Quantity").val())
+        };
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(reservationData),
+            success: function (response) {
+                alert('Foglalás sikeresen létrehozva!');
+                window.location.href = 'http://www.dnndev.me/';
+            },
+            error: function (xhr, status, error) {
+                alert('Hiba történt: ' + error);
+            }
+        });
+        });
+    });
+</script>

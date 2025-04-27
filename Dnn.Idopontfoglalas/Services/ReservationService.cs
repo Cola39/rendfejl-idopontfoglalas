@@ -5,11 +5,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Reflection;
 
 namespace Dnn.Bce.Dnn.Idopontfoglalas.Services
 {
     public class ReservationService : IReservationService
     {
+
         public ReservationEntity GetReservationById(int id)
         {
             using (var context = DataContext.Instance())
