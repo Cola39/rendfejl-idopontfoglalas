@@ -10,7 +10,7 @@ namespace Dnn.Bce.Dnn.Idopontfoglalas.Components
                 moduleFolderName: "Dnn.Idopontfoglalas",
                 routeName: "default",
                 url: "{controller}/{action}",
-                namespaces: new[] { "Dnn.Bce.Dnn.Idopontfoglalas.Controllers" }
+                namespaces: new[] { "Dnn.Bce.Dnn.Idopontfoglalas.Controllers.Api" }
             );
         }
     }

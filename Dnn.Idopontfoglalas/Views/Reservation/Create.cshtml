@@ -1,48 +1,14 @@
 ﻿@inherits DotNetNuke.Web.Mvc.Framework.DnnWebViewPage<Dnn.Bce.Dnn.Idopontfoglalas.Models.ReservationEntity>
-
+@using DotNetNuke.Web.Client.ClientResourceManagement
+@using DotNetNuke.Framework.JavaScriptLibraries
 @{
     ViewBag.Title = "Új foglalás létrehozása";
 }
-
-<div class="reservation-create-container">
-    <h2>Új foglalás</h2>
-
-    <form method="post" id=reservationForm">
-        @Html.AntiForgeryToken()
-
-        <div class="form-group mb-3">
-            <label for="Name">Név</label>
-            <input type="text" class="form-control" id="Name" name="Name" placeholder="Teljes név" required />
-        </div>
-
-        <div class="form-group mb-3">
-            <label for="Email">Email</label>
-            <input type="email" class="form-control" id="Email" name="Email" placeholder="Email cím" required />
-        </div>
-
-        <div class="form-group mb-3">
-            <label for="Phone">Telefonszám</label>
-            <input type="text" class="form-control" id="Phone" name="Phone" placeholder="Telefonszám" required />
-        </div>
-
-        <div class="form-group mb-3">
-            <label for="Time">Időpont</label>
-            <input type="datetime-local" class="form-control" id="Time" name="Time" required />
-        </div>
-
-        <div class="form-group mb-3">
-            <label for="Quantity">Mennyiség</label>
-            <input type="number" class="form-control" id="Quantity" name="Quantity" placeholder="Mennyiség" required />
-        </div>
-
-        <button type="submit" class="btn btn-primary">Foglalás mentése</button>
-    </form>
-</div>
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
-    var sf = $.ServicesFramework('@Dnn.ActiveModule.ModuleID');
-    var serviceUrl = sf.getServiceRoot('Dnn.Bce.Dnn.Idopontfoglalas');
+    var serviceUrl = 'http://www.dnndev.me/API/Dnn.Bce.Dnn.Idopontfoglalas/';
+
     var url = serviceUrl + "ReservationApiController/CreateReservation";
 
     $('#reservationForm').submit(function (event) {
@@ -69,6 +35,42 @@
                 alert('Hiba történt: ' + error);
             }
         });
-        });
     });
 </script>
+
+
+<div class="reservation-create-container">
+    <h2>Új foglalás</h2>
+
+    <form method="post" id=reservationForm">
+        @Html.AntiForgeryToken()
+
+        <div class="form-group mb-3">
+            <label for="Name">Név</label>
+            <input type="text" class="form-control" id="Name" name="Name" placeholder="Teljes név" required value="Kovács Anna" />
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="Email">Email</label>
+            <input type="email" class="form-control" id="Email" name="Email" placeholder="Email cím" required value="asdf@gmail.com" />
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="Phone">Telefonszám</label>
+            <input type="text" class="form-control" id="Phone" name="Phone" placeholder="Telefonszám" required value="06301234567" />
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="Time">Időpont</label>
+            <input type="datetime-local" class="form-control" id="Time" name="Time" required />
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="Quantity">Mennyiség</label>
+            <input type="number" class="form-control" id="Quantity" name="Quantity" placeholder="Mennyiség" required value="3" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Foglalás mentése</button>
+    </form>
+</div>
+

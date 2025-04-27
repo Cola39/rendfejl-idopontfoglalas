@@ -35,7 +35,6 @@ namespace Dnn.Bce.Dnn.Idopontfoglalas.Controllers
 
         // POST: /Reservation/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult Create(ReservationEntity reservation)
         {
             var currentUser = UserController.Instance.GetCurrentUserInfo();
@@ -56,7 +55,6 @@ namespace Dnn.Bce.Dnn.Idopontfoglalas.Controllers
 
         // POST: /Reservation/Delete
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
         {
             var currentUser = UserController.Instance.GetCurrentUserInfo();

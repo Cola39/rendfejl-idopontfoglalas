@@ -1,0 +1,11 @@
+/* BEGIN EXTERNAL SOURCE */
+
+/* END EXTERNAL SOURCE */
+/* BEGIN EXTERNAL SOURCE */
+
+    var moduleId = /************************/;
+
+/* END EXTERNAL SOURCE */
+/* BEGIN EXTERNAL SOURCE */
+
+/* END EXTERNAL SOURCE */

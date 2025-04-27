@@ -11,7 +11,6 @@ using System.Web.Http;
 
 namespace Dnn.Bce.Dnn.Idopontfoglalas.Controllers.Api
 {
-    [DnnAuthorize]
     public class ReservationApiController : DnnApiController
     {
         private readonly IReservationService _reservationService;
@@ -39,7 +38,6 @@ namespace Dnn.Bce.Dnn.Idopontfoglalas.Controllers.Api
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public HttpResponseMessage CreateReservation(ReservationEntity reservation)
         {
             try
@@ -59,8 +57,8 @@ namespace Dnn.Bce.Dnn.Idopontfoglalas.Controllers.Api
         }
 
 
-        [HttpDelete]
-        public HttpResponseMessage DeleteReservation(int id)
+        [HttpPost]
+        public HttpResponseMessage CancelReservation(int id)
         {
             try
             {

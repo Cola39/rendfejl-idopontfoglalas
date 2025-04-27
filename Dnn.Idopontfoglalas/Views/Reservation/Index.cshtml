@@ -1,7 +1,41 @@
 ﻿@inherits DotNetNuke.Web.Mvc.Framework.DnnWebViewPage<IEnumerable<Dnn.Bce.Dnn.Idopontfoglalas.Models.ReservationEntity>>
-
+@using DotNetNuke.Web.Client.ClientResourceManagement
+@using DotNetNuke.Framework.JavaScriptLibraries
 @using DotNetNuke.Entities.Users
 @using DotNetNuke.Web.Mvc.Helpers
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    var serviceUrl = 'http://www.dnndev.me/API/Dnn.Bce.Dnn.Idopontfoglalas/';
+    $(document).on('click', '.btn-danger[data-id]', function () {
+        var id = $(this).data('id');
+
+        if (!confirm('Biztosan törlöd ezt a foglalást?')) {
+            alert('A foglalás törlése megszakítva.');
+            return;
+        };
+
+        var updateData = {
+            IsActive: false
+        };
+        var url = serviceUrl + 'ReservationApiController/CancelReservation?id=' + id
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(updateData),
+            success: function (response) {
+                alert('Foglalás sikeresen lemondva!');
+                window.location.href = 'http://www.dnndev.me/';
+            },
+            error: function (xhr, status, error) {
+                alert('Hiba történt: ' + error);
+            }
+        });
+    });
+</script>
 
 @{
     ViewBag.Title = "Foglalások listája";
@@ -45,17 +79,20 @@
                             <td>@reservation.Name</td>
                             <td>@reservation.Email</td>
                             <td>@reservation.Phone</td>
-                            <td>@reservation.Time?.ToString("yyyy.MM.dd HH:mm")</td>
+                            <td>@reservation.Time</td>
                             <td>@reservation.Quantity</td>
                             <td>@(reservation.IsActive == true ? "Igen" : "Nem")</td>
                             <td>
                                 @if (reservation.IsActive == true && (reservation.CreatedBy == currentUser.UserID || currentUser.IsInRole("Administrators")))
                                 {
-                                    <form method="post" action="@Url.Action("Delete", "Reservation")" onsubmit="return confirm('Biztosan törlöd ezt a foglalást?');">
-                                        @Html.AntiForgeryToken()
-                                        @Html.Hidden("id", reservation.ID)
-                                        <button type="submit" class="btn btn-danger btn-sm">Törlés</button>
-                                    </form>
+                                    <button type="button" class="btn btn-danger btn-sm" data-id="@reservation.ID">Törlés</button>
+
+                                    @*<form method="post" id="deleteForm">
+                                            @Html.AntiForgeryToken()
+                                            @Html.Hidden("id", reservation.ID)
+                                            <input type="hidden" name="id" value="@reservation.ID" />
+                                            <button type="submit" class="btn btn-danger btn-sm">Törlés</button>
+                                        </form>*@
                                 }
                             </td>
                         </tr>
@@ -65,3 +102,6 @@
         </div>
     }
 </div>
+
+
+@*<script src="../../Scripts/ReservationHandler.js"></script>*@
