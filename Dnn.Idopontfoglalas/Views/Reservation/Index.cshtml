@@ -4,7 +4,7 @@
 @using DotNetNuke.Entities.Users
 @using DotNetNuke.Web.Mvc.Helpers
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+@*<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
     var serviceUrl = 'http://www.dnndev.me/API/Dnn.Bce.Dnn.Idopontfoglalas/';
@@ -35,7 +35,7 @@
             }
         });
     });
-</script>
+</script>*@
 
 @{
     ViewBag.Title = "Foglalások listája";
@@ -63,12 +63,12 @@
                     <tr>
                         <th>ID</th>
                         <th>Név</th>
-                        <th>Email</th>
+                        <th>E-mail</th>
                         <th>Telefonszám</th>
                         <th>Időpont</th>
-                        <th>Mennyiség</th>
-                        <th>Aktív?</th>
-                        <th>Művelet</th>
+                        <th>Hány fő?</th>
+                        @*<th>Státusz</th>*@
+                        <th>Lemondás</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -81,18 +81,19 @@
                             <td>@reservation.Phone</td>
                             <td>@reservation.Time</td>
                             <td>@reservation.Quantity</td>
-                            <td>@(reservation.IsActive == true ? "Igen" : "Nem")</td>
+                            @*<td>@(reservation.IsActive == true ? "Aktív" : "Passzív")</td>*@
                             <td>
                                 @if (reservation.IsActive == true && (reservation.CreatedBy == currentUser.UserID || currentUser.IsInRole("Administrators")))
                                 {
-                                    <button type="button" class="btn btn-danger btn-sm" data-id="@reservation.ID">Törlés</button>
+                                    <form method="post" id="deleteForm" action="@Url.Action("Delete", "Reservation")">
+                                        <input type="hidden" name="id" value="@reservation.ID" />
+                                        <button type="submit" class="btn btn-danger btn-sm">Törlés</button>
+                                    </form>
+                                }
 
-                                    @*<form method="post" id="deleteForm">
-                                            @Html.AntiForgeryToken()
-                                            @Html.Hidden("id", reservation.ID)
-                                            <input type="hidden" name="id" value="@reservation.ID" />
-                                            <button type="submit" class="btn btn-danger btn-sm">Törlés</button>
-                                        </form>*@
+                                else if (reservation.IsActive == false)
+                                {
+                                    <span class="badge bg-secondary">Lemondva</span>
                                 }
                             </td>
                         </tr>
@@ -102,6 +103,3 @@
         </div>
     }
 </div>
-
-
-@*<script src="../../Scripts/ReservationHandler.js"></script>*@

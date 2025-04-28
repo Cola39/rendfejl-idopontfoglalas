@@ -9,7 +9,7 @@ namespace Dnn.Bce.Dnn.Idopontfoglalas.Components
             mapRouteManager.MapHttpRoute(
                 moduleFolderName: "Dnn.Idopontfoglalas",
                 routeName: "default",
-                url: "{controller}/{action}",
+                url: "ReservationApi/CreateReservation",
                 namespaces: new[] { "Dnn.Bce.Dnn.Idopontfoglalas.Controllers.Api" }
             );
         }

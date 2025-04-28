@@ -4,7 +4,8 @@
 @{
     ViewBag.Title = "Új foglalás létrehozása";
 }
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+@*<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
     var serviceUrl = 'http://www.dnndev.me/API/Dnn.Bce.Dnn.Idopontfoglalas/';
@@ -21,7 +22,7 @@
             Time: $("#Time").val(),
             Quantity: parseInt($("#Quantity").val())
         };
-
+        console.log("ajax előtt");
         $.ajax({
             url: url,
             type: 'POST',
@@ -35,16 +36,16 @@
                 alert('Hiba történt: ' + error);
             }
         });
+        console.log("ajax után");
+
     });
-</script>
+</script>*@
 
 
 <div class="reservation-create-container">
     <h2>Új foglalás</h2>
 
     <form method="post" id=reservationForm">
-        @Html.AntiForgeryToken()
-
         <div class="form-group mb-3">
             <label for="Name">Név</label>
             <input type="text" class="form-control" id="Name" name="Name" placeholder="Teljes név" required value="Kovács Anna" />
