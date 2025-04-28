@@ -32,7 +32,9 @@ namespace Dnn.Bce.Dnn.Idopontfoglalas.Models
             public string Name { get; set; }
             public string Email { get; set; }
             public string Phone { get; set; }
-            public DateTime? Time { get; set; }
+            public DateTime? StartTime { get; set; }
+            public DateTime? EndTime { get; set; }
+
             public int? Quantity { get; set; }
         }
 

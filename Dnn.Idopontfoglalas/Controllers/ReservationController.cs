@@ -44,6 +44,7 @@ namespace Dnn.Bce.Dnn.Idopontfoglalas.Controllers
                 reservation.CreatedAt = DateTime.Now;
                 reservation.IsActive = true;
                 reservation.CreatedBy = currentUser.UserID;
+                reservation.EndTime = reservation.StartTime?.AddHours(2);
 
                 _reservationService.CreateReservation(reservation);
 
