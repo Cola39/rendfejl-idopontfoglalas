@@ -4,6 +4,7 @@
 @using DotNetNuke.Entities.Users
 @using DotNetNuke.Web.Mvc.Helpers
 
+
 @*<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
@@ -81,7 +82,7 @@
                                 <td>@reservation.Name</td>
                                 <td>@reservation.Email</td>
                                 <td>@reservation.Phone</td>
-                                <td>@reservation.StartTime</td>
+                                <td>@(reservation.StartTime != null ? reservation.StartTime.Value.ToString("yyyy. MMMM dd. HH:mm", new System.Globalization.CultureInfo("hu-HU")) : "")</td>
                                 <td>@reservation.Quantity</td>
                                 @*<td>@(reservation.IsActive == true ? "Aktív" : "Passzív")</td>*@
                                 <td>

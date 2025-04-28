@@ -4,6 +4,7 @@ using DotNetNuke.Web.Mvc.Framework.Controllers;
 using Dnn.Bce.Dnn.Idopontfoglalas.Models;
 using Dnn.Bce.Dnn.Idopontfoglalas.Services;
 using DotNetNuke.Entities.Users;
+using System.Linq;
 
 namespace Dnn.Bce.Dnn.Idopontfoglalas.Controllers
 {
@@ -33,6 +34,16 @@ namespace Dnn.Bce.Dnn.Idopontfoglalas.Controllers
             return View("Create");
         }
 
+        [HttpGet]
+        public ActionResult GetFullHours()
+        {
+            var service = new ReservationService();
+            var fullHours = service.GetFullyBookedHours();
+            var formatted = fullHours.Select(dt => dt.ToString("yyyy-MM-ddTHH:mm:ss")).ToList();
+
+            return Json(formatted, JsonRequestBehavior.AllowGet);
+        }
+
         // POST: /Reservation/Create
         [HttpPost]
         public ActionResult Create(ReservationEntity reservation)
@@ -46,8 +57,14 @@ namespace Dnn.Bce.Dnn.Idopontfoglalas.Controllers
                 reservation.CreatedBy = currentUser.UserID;
                 reservation.EndTime = reservation.StartTime?.AddHours(2);
 
-                _reservationService.CreateReservation(reservation);
+                var existingCount = _reservationService.CountReservationsInHour(reservation.StartTime.Value, reservation.EndTime.Value);
+                if (existingCount >= 3)
+                {
+                    ModelState.AddModelError("", "Maximum number of reservations for this time slot has been reached.");
+                    return View("Create", reservation);
+                }
 
+                _reservationService.CreateReservation(reservation);
                 return RedirectToAction("Index");
             }
 

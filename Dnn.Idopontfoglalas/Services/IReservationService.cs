@@ -12,7 +12,8 @@ namespace Dnn.Bce.Dnn.Idopontfoglalas.Services
         ReservationEntity GetReservationById(int id);
         IEnumerable<ReservationEntity> GetReservations(bool isAdmin, int userId);
         void CreateReservation(ReservationEntity reservation);
-        bool IsAvailable(int id);
+        int CountReservationsInHour(DateTime startTime, DateTime endTime);
+        List<DateTime> GetFullyBookedHours();
         void CancelReservation(int id);
 
     }

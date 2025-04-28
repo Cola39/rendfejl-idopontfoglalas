@@ -5,47 +5,118 @@
     ViewBag.Title = "Új foglalás létrehozása";
 }
 
-@*<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/hu.js"></script>
 
 <script>
-    var serviceUrl = 'http://www.dnndev.me/API/Dnn.Bce.Dnn.Idopontfoglalas/';
+    @*var url = '@Url.Action("GetFullHours", "Reservation")';
+    let fullHours = [];
+    function fetchFullHours() {
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                fullHours = data.map(d => new Date(d));
+            });
+    };*@
 
-    var url = serviceUrl + "ReservationApiController/CreateReservation";
+    function getRoundedDate() {
+        const now = new Date();
+        now.setSeconds(0);
+        now.setMilliseconds(0);
+        if (now.getMinutes() > 0) {
+            now.setHours(now.getHours() + 1);
+            now.setMinutes(0);
+        }
+        return now;
+    };
 
-    $('#reservationForm').submit(function (event) {
-        event.preventDefault();
-
-        var reservationData = {
-            Name: $("#Name").val(),
-            Email: $("#Email").val(),
-            Phone: $("#Phone").val(),
-            Time: $("#Time").val(),
-            Quantity: parseInt($("#Quantity").val())
-        };
-        console.log("ajax előtt");
-        $.ajax({
-            url: url,
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(reservationData),
-            success: function (response) {
-                alert('Foglalás sikeresen létrehozva!');
-                window.location.href = 'http://www.dnndev.me/';
-            },
-            error: function (xhr, status, error) {
-                alert('Hiba történt: ' + error);
-            }
+    document.addEventListener('DOMContentLoaded', function () {
+        flatpickr("#StartTime", {
+            enableTime: true,
+            time_24hr: true,
+            enableSeconds: false,
+            minuteIncrement: 60, // <-- Only full hours
+            defaultMinute: 0,
+            defaultDate: getRoundedDate(), // <-- Rounded to next full hour
+            minDate: "today",
+            allowInput: false,
+            dateFormat: "Y-m-d\\TH:i",
+            altInput: true,
+            altFormat: "Y. F d. H:00", // <-- Show ":00" always
+            locale: "hu"
         });
-        console.log("ajax után");
-
     });
-</script>*@
+
+    //document.addEventListener('DOMContentLoaded', function () {
+    //    fetchFullHours().then(() => {
+    //        flatpickr("#StartTime", {
+    //            enableTime: true,
+    //            time_24hr: true,
+    //            enableSeconds: false,
+    //            minuteIncrement: 60,
+    //            defaultMinute: 0,
+    //            defaultDate: getRoundedDate(),
+    //            minDate: "today",
+    //            allowInput: false,
+    //            dateFormat: "Y-m-d\\TH:i",
+    //            altInput: true,
+    //            altFormat: "Y. F d. H:00",
+    //            locale: "hu",
+    //            disable: fullHours,
+    //            onChange: function (selectedDates, dateStr, instance) {
+    //            // Optional: check if selected time is full
+    //                if (fullHours.some(d => d.getTime() === selectedDates[0].getTime())) {
+    //                    alert("This hour is fully booked. Please select another time.");
+    //                    instance.clear();
+    //                }
+    //            }
+    //        });
+    //    });
+    //});
+</script>
+
+@*<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        var serviceUrl = 'http://www.dnndev.me/API/Dnn.Bce.Dnn.Idopontfoglalas/';
+
+        var url = serviceUrl + "ReservationApiController/CreateReservation";
+
+        $('#reservationForm').submit(function (event) {
+            event.preventDefault();
+
+            var reservationData = {
+                Name: $("#Name").val(),
+                Email: $("#Email").val(),
+                Phone: $("#Phone").val(),
+                Time: $("#Time").val(),
+                Quantity: parseInt($("#Quantity").val())
+            };
+            console.log("ajax előtt");
+            $.ajax({
+                url: url,
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(reservationData),
+                success: function (response) {
+                    alert('Foglalás sikeresen létrehozva!');
+                    window.location.href = 'http://www.dnndev.me/';
+                },
+                error: function (xhr, status, error) {
+                    alert('Hiba történt: ' + error);
+                }
+            });
+            console.log("ajax után");
+
+        });
+    </script>*@
 
 
 <div class="reservation-create-container">
     <h2>Új foglalás</h2>
 
-    <form method="post" id=reservationForm">
+    <form method="post" id="reservationForm">
         <div class="form-group mb-3">
             <label for="Name">Név</label>
             <input type="text" class="form-control" id="Name" name="Name" placeholder="Teljes név" required />
@@ -63,7 +134,7 @@
 
         <div class="form-group mb-3">
             <label for="StartTime">Időpont</label>
-            <input type="datetime-local" class="form-control" id="StartTime" name="StartTime" required />
+            <input type="text" class="form-control" id="StartTime" name="StartTime" required />
         </div>
 
         <div class="form-group mb-3">

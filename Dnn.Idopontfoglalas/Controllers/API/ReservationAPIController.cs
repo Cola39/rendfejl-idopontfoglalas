@@ -7,7 +7,7 @@ using System.Net;
 using DotNetNuke.Web.Api;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Web.Http;
+using System.Web.Mvc;
 
 namespace Dnn.Bce.Dnn.Idopontfoglalas.Controllers.Api
 {

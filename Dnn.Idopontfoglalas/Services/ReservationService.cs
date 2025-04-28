@@ -47,12 +47,51 @@ namespace Dnn.Bce.Dnn.Idopontfoglalas.Services
                 repo.Insert(reservation);
             }
         }
-
-        public bool IsAvailable(int id)
+        public int CountReservationsInHour(DateTime startTime, DateTime endTime)
         {
-            var reservation = GetReservationById(id);
-            return reservation != null && reservation.IsActive == true;
+            using (var context = DataContext.Instance())
+            {
+                var repo = context.GetRepository<ReservationEntity>();
+                var reservations = repo.Get();
+
+                return reservations.Count(r =>
+                    r.IsActive == true &&
+                    r.StartTime.HasValue && r.EndTime.HasValue &&
+                    (
+                        (startTime >= r.StartTime && startTime < r.EndTime) ||  // new starts during existing
+                        (endTime > r.StartTime && endTime <= r.EndTime) ||      // new ends during existing
+                        (startTime <= r.StartTime && endTime >= r.EndTime)      // new fully covers existing
+                    )
+                );
+            }
         }
+
+        public List<DateTime> GetFullyBookedHours()
+        {
+            using (var context = DataContext.Instance())
+            {
+                var repo = context.GetRepository<ReservationEntity>();
+                var reservations = repo.Get()
+                    .Where(r => r.IsActive == true && r.StartTime.HasValue && r.EndTime.HasValue)
+                    .ToList();
+
+                // Group reservations by each hour block
+                var grouped = reservations
+                    .Select(r => new
+                    {
+                        HourStart = new DateTime(r.StartTime.Value.Year, r.StartTime.Value.Month, r.StartTime.Value.Day, r.StartTime.Value.Hour, 0, 0),
+                        r.StartTime,
+                        r.EndTime
+                    })
+                    .GroupBy(x => x.HourStart)
+                    .Where(g => g.Count() >= 3)
+                    .Select(g => g.Key)
+                    .ToList();
+
+                return grouped;
+            }
+        }
+
 
         public void CancelReservation(int id)
         {
