@@ -46,7 +46,7 @@
 <div class="reservation-container">
     <h2>Foglalások</h2>
 
-    @if (currentUser.UserID > 0)
+    @if (currentUser != null && currentUser.UserID > 0)
     {
         <div class="mb-3">
             <a class="btn btn-primary" href="@Url.Action("Create", "Reservation")">Új foglalás</a>
@@ -107,10 +107,10 @@
         }
     }
 
-    else
+    @if (currentUser == null || currentUser.UserID <= 0)
     {
-        <div class="alert alert-warning">
-            <p>Kérlek, jelentkezz be a foglalások megtekintéséhez.</p>
-        </div>
+    <div class="alert alert-warning">
+        <p>Kérlek, jelentkezz be a foglalások megtekintéséhez.</p>
+    </div>
     }
 </div>

@@ -20,33 +20,49 @@
             });
     };*@
 
-    function getRoundedDate() {
-        const now = new Date();
-        now.setSeconds(0);
-        now.setMilliseconds(0);
-        if (now.getMinutes() > 0) {
-            now.setHours(now.getHours() + 1);
-            now.setMinutes(0);
+    (function () {
+        function getRoundedDate() {
+            const now = new Date();
+            now.setSeconds(0);
+            now.setMilliseconds(0);
+            if (now.getMinutes() > 0) {
+                now.setHours(now.getHours() + 1);
+                now.setMinutes(0);
+            }
+            return now;
         }
-        return now;
-    };
 
-    document.addEventListener('DOMContentLoaded', function () {
-        flatpickr("#StartTime", {
-            enableTime: true,
-            time_24hr: true,
-            enableSeconds: false,
-            minuteIncrement: 60, // <-- Only full hours
-            defaultMinute: 0,
-            defaultDate: getRoundedDate(), // <-- Rounded to next full hour
-            minDate: "today",
-            allowInput: false,
-            dateFormat: "Y-m-d\\TH:i",
-            altInput: true,
-            altFormat: "Y. F d. H:00", // <-- Show ":00" always
-            locale: "hu"
+        function initializeFlatpickr() {
+            if (typeof flatpickr !== 'undefined') {
+                flatpickr("#StartTime", {
+                    enableTime: true,
+                    time_24hr: true,
+                    enableSeconds: false,
+                    minuteIncrement: 60,
+                    defaultMinute: 0,
+                    defaultDate: getRoundedDate(),
+                    minDate: "today",
+                    allowInput: false,
+                    dateFormat: "Y-m-d\\TH:i",
+                    altInput: true,
+                    altFormat: "Y. F d. H:00",
+                    locale: "hu"
+                });
+            } else {
+                console.error("Flatpickr is not loaded!");
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            initializeFlatpickr();
         });
-    });
+
+        if (typeof Sys !== 'undefined' && Sys.Application) {
+            Sys.Application.add_load(function () {
+                initializeFlatpickr();
+            });
+        }
+    })();
 
     //document.addEventListener('DOMContentLoaded', function () {
     //    fetchFullHours().then(() => {
