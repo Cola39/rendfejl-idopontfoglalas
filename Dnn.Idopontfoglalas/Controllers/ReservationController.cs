@@ -17,7 +17,6 @@ namespace Dnn.Bce.Dnn.Idopontfoglalas.Controllers
             _reservationService = new ReservationService();
         }
 
-        // GET: /Reservation/Index
         public ActionResult Index()
         {
             var currentUser = UserController.Instance.GetCurrentUserInfo();
@@ -28,7 +27,6 @@ namespace Dnn.Bce.Dnn.Idopontfoglalas.Controllers
             return View("Index", reservations);
         }
 
-        // GET: /Reservation/Create
         public ActionResult Create()
         {
             return View("Create");
@@ -43,7 +41,6 @@ namespace Dnn.Bce.Dnn.Idopontfoglalas.Controllers
             return Json(fullHours, JsonRequestBehavior.AllowGet);
         }
 
-        // POST: /Reservation/Create
         [HttpPost]
         public ActionResult Create(ReservationEntity reservation)
         {

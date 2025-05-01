@@ -50,7 +50,7 @@
                                 <td>@(reservation.StartTime != null ? reservation.StartTime.Value.ToString("yyyy. MMMM dd. HH:mm", new System.Globalization.CultureInfo("hu-HU")) : "")</td>
                                 <td>@reservation.Quantity</td>
                             <td>
-                                @if (reservation.IsActive == true && (reservation.CreatedBy == currentUser.UserID || currentUser.IsInRole("Administrators")))
+                                @if (reservation.IsActive == true && (reservation.CreatedBy == currentUser.UserID || currentUser.IsInRole("Administrators")) && reservation.EndTime >= DateTime.Now)
                                 {
                                     <form method="post" id="deleteForm-@reservation.ID" action="@Url.Action("Cancel", "Reservation")">
                                         <input type="hidden" name="id" value="@reservation.ID" />

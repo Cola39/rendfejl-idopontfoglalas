@@ -12,17 +12,13 @@
 
 using DotNetNuke.ComponentModel.DataAnnotations;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Caching;
 
 namespace Dnn.Bce.Dnn.Idopontfoglalas.Models
     {
         [TableName("Reservations")]
         [PrimaryKey(nameof(ID), AutoIncrement = true)]
- //       [Cacheable("Reservation", CacheItemPriority.Default, 20)]
+        [Cacheable("Reservation", CacheItemPriority.Default, 20)]
         public class ReservationEntity
         {
             public int ID { get; set; }
@@ -34,7 +30,6 @@ namespace Dnn.Bce.Dnn.Idopontfoglalas.Models
             public string Phone { get; set; }
             public DateTime? StartTime { get; set; }
             public DateTime? EndTime { get; set; }
-
             public int? Quantity { get; set; }
         }
 

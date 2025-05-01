@@ -1,9 +1,6 @@
 ﻿using Dnn.Bce.Dnn.Idopontfoglalas.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Dnn.Bce.Dnn.Idopontfoglalas.Services
 {
