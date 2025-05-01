@@ -85,20 +85,25 @@
                                 <td>@(reservation.StartTime != null ? reservation.StartTime.Value.ToString("yyyy. MMMM dd. HH:mm", new System.Globalization.CultureInfo("hu-HU")) : "")</td>
                                 <td>@reservation.Quantity</td>
                                 @*<td>@(reservation.IsActive == true ? "Aktív" : "Passzív")</td>*@
-                                <td>
-                                    @if (reservation.IsActive == true && (reservation.CreatedBy == currentUser.UserID || currentUser.IsInRole("Administrators")))
-                                    {
-                                        <form method="post" id="deleteForm-@reservation.ID" action="@Url.Action("Cancel", "Reservation")">
-                                            <input type="hidden" name="id" value="@reservation.ID" />
-                                            <button type="submit" class="btn btn-danger btn-sm" formaction="@Url.Action("Cancel", "Reservation")">Törlés</button>
-                                        </form>
-                                    }
+                            <td>
+                                @if (reservation.IsActive == true && (reservation.CreatedBy == currentUser.UserID || currentUser.IsInRole("Administrators")))
+                                {
+                                    <form method="post" id="deleteForm-@reservation.ID" action="@Url.Action("Cancel", "Reservation")">
+                                        <input type="hidden" name="id" value="@reservation.ID" />
+                                        <button type="submit" class="btn btn-danger btn-sm" formaction="@Url.Action("Cancel", "Reservation")">Törlés</button>
+                                    </form>
+                                }
 
-                                    else if (reservation.IsActive == false)
-                                    {
-                                        <span class="badge bg-secondary">Lemondva</span>
-                                    }
-                                </td>
+                                else if (reservation.EndTime < DateTime.Now)
+                                {
+                                    <span class="badge bg-secondary">Elmúlt</span>
+                                }
+
+                                else if (reservation.IsActive == false)
+                                {
+                                    <span class="badge bg-secondary">Lemondva</span>
+                                }
+                            </td>
                             </tr>
                         }
                     </tbody>
