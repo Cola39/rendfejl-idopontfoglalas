@@ -155,7 +155,8 @@
 
         <div class="form-group mb-3">
             <label for="Quantity">Hány főre?</label>
-            <input type="number" class="form-control" id="Quantity" name="Quantity" placeholder="fők száma" value=4 required />
+            <input type="number" class="form-control" id="Quantity" name="Quantity" placeholder="fők száma" value=4
+                   min="2" max="8" oninvalid="this.setCustomValidity('Csak 2-8 főre lehet foglalni')" oninput="this.setCustomValidity('')" required />
         </div>
 
         <button type="submit" class="btn btn-primary">Foglalás mentése</button>
