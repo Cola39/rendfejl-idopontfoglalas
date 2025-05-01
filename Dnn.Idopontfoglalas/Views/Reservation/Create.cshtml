@@ -1,6 +1,9 @@
 ﻿@inherits DotNetNuke.Web.Mvc.Framework.DnnWebViewPage<Dnn.Bce.Dnn.Idopontfoglalas.Models.ReservationEntity>
 @using DotNetNuke.Web.Client.ClientResourceManagement
 @using DotNetNuke.Framework.JavaScriptLibraries
+@using DotNetNuke.Web.Client.ClientResourceManagement
+
+
 @{
     ViewBag.Title = "Új foglalás létrehozása";
 }
@@ -10,16 +13,6 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/hu.js"></script>
 
 <script>
-    @*var url = '@Url.Action("GetFullHours", "Reservation")';
-    let fullHours = [];
-    function fetchFullHours() {
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                fullHours = data.map(d => new Date(d));
-            });
-    };*@
-
     (function () {
         function getRoundedDate() {
             const now = new Date();
@@ -63,103 +56,56 @@
             });
         }
     })();
-
-    //document.addEventListener('DOMContentLoaded', function () {
-    //    fetchFullHours().then(() => {
-    //        flatpickr("#StartTime", {
-    //            enableTime: true,
-    //            time_24hr: true,
-    //            enableSeconds: false,
-    //            minuteIncrement: 60,
-    //            defaultMinute: 0,
-    //            defaultDate: getRoundedDate(),
-    //            minDate: "today",
-    //            allowInput: false,
-    //            dateFormat: "Y-m-d\\TH:i",
-    //            altInput: true,
-    //            altFormat: "Y. F d. H:00",
-    //            locale: "hu",
-    //            disable: fullHours,
-    //            onChange: function (selectedDates, dateStr, instance) {
-    //            // Optional: check if selected time is full
-    //                if (fullHours.some(d => d.getTime() === selectedDates[0].getTime())) {
-    //                    alert("This hour is fully booked. Please select another time.");
-    //                    instance.clear();
-    //                }
-    //            }
-    //        });
-    //    });
-    //});
 </script>
-
-@*<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <script>
-        var serviceUrl = 'http://www.dnndev.me/API/Dnn.Bce.Dnn.Idopontfoglalas/';
-
-        var url = serviceUrl + "ReservationApiController/CreateReservation";
-
-        $('#reservationForm').submit(function (event) {
-            event.preventDefault();
-
-            var reservationData = {
-                Name: $("#Name").val(),
-                Email: $("#Email").val(),
-                Phone: $("#Phone").val(),
-                Time: $("#Time").val(),
-                Quantity: parseInt($("#Quantity").val())
-            };
-            console.log("ajax előtt");
-            $.ajax({
-                url: url,
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(reservationData),
-                success: function (response) {
-                    alert('Foglalás sikeresen létrehozva!');
-                    window.location.href = 'http://www.dnndev.me/';
-                },
-                error: function (xhr, status, error) {
-                    alert('Hiba történt: ' + error);
-                }
-            });
-            console.log("ajax után");
-
-        });
-    </script>*@
-
 
 <div class="reservation-create-container">
     <h2>Új foglalás</h2>
 
     <form method="post" id="reservationForm">
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger">
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <p>@error.ErrorMessage</p>
+                }
+            </div>
+        }
+
         <div class="form-group mb-3">
             <label for="Name">Név</label>
-            <input type="text" class="form-control" id="Name" name="Name" placeholder="Teljes név" required />
+            <input type="text" class="form-control" id="Name" name="Name"
+                   placeholder="Teljes név" value="@Request.Form["Name"]" required />
         </div>
 
         <div class="form-group mb-3">
             <label for="Email">E-mail</label>
-            <input type="email" class="form-control" id="Email" name="Email" placeholder="E-mail cím" required />
+            <input type="email" class="form-control" id="Email" name="Email"
+                   placeholder="E-mail cím" value="@Request.Form["Email"]" required />
         </div>
 
         <div class="form-group mb-3">
             <label for="Phone">Telefonszám</label>
-            <input type="text" class="form-control" id="Phone" name="Phone" placeholder="Telefonszám" required />
+            <input type="text" class="form-control" id="Phone" name="Phone"
+                   placeholder="Telefonszám" value="@Request.Form["Phone"]" required />
         </div>
 
         <div class="form-group mb-3">
             <label for="StartTime">Időpont</label>
-            <input type="text" class="form-control" id="StartTime" name="StartTime" required />
+            <input type="text" class="form-control" id="StartTime" name="StartTime"
+                   value="@Request.Form["StartTime"]" required />
         </div>
 
         <div class="form-group mb-3">
             <label for="Quantity">Hány főre?</label>
-            <input type="number" class="form-control" id="Quantity" name="Quantity" placeholder="fők száma" value=4
-                   min="2" max="8" oninvalid="this.setCustomValidity('Csak 2-8 főre lehet foglalni')" oninput="this.setCustomValidity('')" required />
+            <input type="number" class="form-control" id="Quantity" name="Quantity"
+                   placeholder="fők száma" value="@Request.Form["Quantity"]"
+                   min="2" max="8"
+                   oninvalid="this.setCustomValidity('Csak 2-8 főre lehet foglalni')"
+                   oninput="this.setCustomValidity('')" required />
         </div>
 
-        <button type="submit" class="btn btn-primary">Foglalás mentése</button>
+        <button type="submit" class="btn btn-primary" formaction="@Url.Action("Create", "Reservation")">Foglalás mentése</button>
     </form>
 </div>
 

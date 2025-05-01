@@ -38,7 +38,6 @@ namespace Dnn.Bce.Dnn.Idopontfoglalas.Services
             }
         }
 
-
         public void CreateReservation(ReservationEntity reservation)
         {
             using (var context = DataContext.Instance())
@@ -75,7 +74,6 @@ namespace Dnn.Bce.Dnn.Idopontfoglalas.Services
                     .Where(r => r.IsActive == true && r.StartTime.HasValue && r.EndTime.HasValue)
                     .ToList();
 
-                // Group reservations by each hour block
                 var grouped = reservations
                     .Select(r => new
                     {

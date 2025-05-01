@@ -39,9 +39,8 @@ namespace Dnn.Bce.Dnn.Idopontfoglalas.Controllers
         {
             var service = new ReservationService();
             var fullHours = service.GetFullyBookedHours();
-            var formatted = fullHours.Select(dt => dt.ToString("yyyy-MM-ddTHH:mm:ss")).ToList();
 
-            return Json(formatted, JsonRequestBehavior.AllowGet);
+            return Json(fullHours, JsonRequestBehavior.AllowGet);
         }
 
         // POST: /Reservation/Create
@@ -60,7 +59,7 @@ namespace Dnn.Bce.Dnn.Idopontfoglalas.Controllers
                 var existingCount = _reservationService.CountReservationsInHour(reservation.StartTime.Value, reservation.EndTime.Value);
                 if (existingCount >= 3)
                 {
-                    ModelState.AddModelError("", "Maximum number of reservations for this time slot has been reached.");
+                    ModelState.AddModelError("", "A kiválasztott időpontra már nincs több szabad hely.");
                     return View("Create", reservation);
                 }
 

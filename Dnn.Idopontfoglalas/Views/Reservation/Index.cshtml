@@ -4,40 +4,6 @@
 @using DotNetNuke.Entities.Users
 @using DotNetNuke.Web.Mvc.Helpers
 
-
-@*<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <script>
-        var serviceUrl = 'http://www.dnndev.me/API/Dnn.Bce.Dnn.Idopontfoglalas/';
-        $(document).on('click', '.btn-danger[data-id]', function () {
-            var id = $(this).data('id');
-
-            if (!confirm('Biztosan törlöd ezt a foglalást?')) {
-                alert('A foglalás törlése megszakítva.');
-                return;
-            };
-
-            var updateData = {
-                IsActive: false
-            };
-            var url = serviceUrl + 'ReservationApiController/CancelReservation?id=' + id
-
-            $.ajax({
-                url: url,
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(updateData),
-                success: function (response) {
-                    alert('Foglalás sikeresen lemondva!');
-                    window.location.href = 'http://www.dnndev.me/';
-                },
-                error: function (xhr, status, error) {
-                    alert('Hiba történt: ' + error);
-                }
-            });
-        });
-    </script>*@
-
 @{
     ViewBag.Title = "Foglalások listája";
     var currentUser = UserController.Instance.GetCurrentUserInfo();
@@ -70,7 +36,6 @@
                             <th>Telefonszám</th>
                             <th>Időpont</th>
                             <th>Hány fő?</th>
-                            @*<th>Státusz</th>*@
                             <th>Lemondás</th>
                         </tr>
                     </thead>
@@ -84,7 +49,6 @@
                                 <td>@reservation.Phone</td>
                                 <td>@(reservation.StartTime != null ? reservation.StartTime.Value.ToString("yyyy. MMMM dd. HH:mm", new System.Globalization.CultureInfo("hu-HU")) : "")</td>
                                 <td>@reservation.Quantity</td>
-                                @*<td>@(reservation.IsActive == true ? "Aktív" : "Passzív")</td>*@
                             <td>
                                 @if (reservation.IsActive == true && (reservation.CreatedBy == currentUser.UserID || currentUser.IsInRole("Administrators")))
                                 {
