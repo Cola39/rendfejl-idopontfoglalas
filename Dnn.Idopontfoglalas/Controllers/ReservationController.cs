@@ -71,9 +71,8 @@ namespace Dnn.Bce.Dnn.Idopontfoglalas.Controllers
             return View("Create", reservation);
         }
 
-        // POST: /Reservation/Delete
         [HttpPost]
-        public ActionResult Delete(int id)
+        public ActionResult Cancel(int id)
         {
             var currentUser = UserController.Instance.GetCurrentUserInfo();
             var reservation = _reservationService.GetReservationById(id);

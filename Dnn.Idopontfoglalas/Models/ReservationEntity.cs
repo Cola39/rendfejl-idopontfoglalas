@@ -22,7 +22,7 @@ namespace Dnn.Bce.Dnn.Idopontfoglalas.Models
     {
         [TableName("Reservations")]
         [PrimaryKey(nameof(ID), AutoIncrement = true)]
-        [Cacheable("Reservation", CacheItemPriority.Default, 20)]
+ //       [Cacheable("Reservation", CacheItemPriority.Default, 20)]
         public class ReservationEntity
         {
             public int ID { get; set; }

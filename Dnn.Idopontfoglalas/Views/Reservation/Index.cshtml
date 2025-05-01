@@ -88,9 +88,9 @@
                                 <td>
                                     @if (reservation.IsActive == true && (reservation.CreatedBy == currentUser.UserID || currentUser.IsInRole("Administrators")))
                                     {
-                                        <form method="post" id="deleteForm" action="@Url.Action("Delete", "Reservation")">
+                                        <form method="post" id="deleteForm-@reservation.ID" action="@Url.Action("Cancel", "Reservation")">
                                             <input type="hidden" name="id" value="@reservation.ID" />
-                                            <button type="submit" class="btn btn-danger btn-sm">Törlés</button>
+                                            <button type="submit" class="btn btn-danger btn-sm" formaction="@Url.Action("Cancel", "Reservation")">Törlés</button>
                                         </form>
                                     }
 
