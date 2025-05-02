@@ -82,13 +82,16 @@
         <div class="form-group mb-3">
             <label for="Email">E-mail</label>
             <input type="email" class="form-control" id="Email" name="Email"
-                   placeholder="E-mail cím" value="@Request.Form["Email"]" required />
+                   placeholder="E-mail cím" value="@Request.Form["Email"]" 
+                   pattern=@Html.Raw("[a-zA-Z0-9._%\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,}") title="Érvényes e-mail címet adjon meg" required />
         </div>
 
         <div class="form-group mb-3">
             <label for="Phone">Telefonszám</label>
             <input type="text" class="form-control" id="Phone" name="Phone"
-                   placeholder="Telefonszám" value="@Request.Form["Phone"]" required />
+                   placeholder="Telefonszám" value="@Request.Form["Phone"]"
+                   pattern="(\+[\d]{1,15}|0\d{1,15})"
+                   title="A telefonszám + országhívóval vagy 0-val kezdődjön, csak számokat tartalmazzon" required />
         </div>
 
         <div class="form-group mb-3">
