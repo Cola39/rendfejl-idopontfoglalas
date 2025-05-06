@@ -23,7 +23,7 @@ namespace Dnn.Bce.Dnn.Idopontfoglalas.Controllers
             bool isAdmin = currentUser.IsInRole("Administrators");
             int userId = currentUser.UserID;
 
-            var reservations = _reservationService.GetReservations(isAdmin, userId);
+            var reservations = _reservationService.GetReservations(isAdmin, userId).OrderByDescending(r => r.StartTime);
             return View("Index", reservations);
         }
 
