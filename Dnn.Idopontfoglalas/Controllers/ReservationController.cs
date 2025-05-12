@@ -5,6 +5,7 @@ using Dnn.Bce.Dnn.Idopontfoglalas.Models;
 using Dnn.Bce.Dnn.Idopontfoglalas.Services;
 using DotNetNuke.Entities.Users;
 using System.Linq;
+using System.Diagnostics.Eventing.Reader;
 
 namespace Dnn.Bce.Dnn.Idopontfoglalas.Controllers
 {
@@ -29,7 +30,15 @@ namespace Dnn.Bce.Dnn.Idopontfoglalas.Controllers
 
         public ActionResult Create()
         {
-            return View("Create");
+            UserInfo user = UserController.Instance.GetCurrentUserInfo();
+            if (user != null && user.UserID > 0)
+            {
+                return View("Create");
+            }
+            else
+            {
+                return View("Index");
+            }
         }
 
         [HttpGet]
@@ -53,10 +62,16 @@ namespace Dnn.Bce.Dnn.Idopontfoglalas.Controllers
                 reservation.CreatedBy = currentUser.UserID;
                 reservation.EndTime = reservation.StartTime?.AddHours(2);
 
+                var conflictingReservations = _reservationService.GetFullyBookedHours();
                 var existingCount = _reservationService.CountReservationsInHour(reservation.StartTime.Value, reservation.EndTime.Value);
                 if (existingCount >= 3)
                 {
-                    ModelState.AddModelError("", "A kiválasztott időpontra már nincs több szabad hely.");
+                    var occupiedTimes = string.Join(", ", conflictingReservations
+                        .Where(r => r > DateTime.Now)
+                        .OrderBy(r => r)
+                        .Select(r => r.ToString("yyyy. MMMM dd. HH:mm", new System.Globalization.CultureInfo("hu-HU"))));
+
+                    ModelState.AddModelError("", $"A kiválasztott időpontra már nincs több szabad hely. Az alábbi időpontok foglaltak: {occupiedTimes}");
                     return View("Create", reservation);
                 }
 
