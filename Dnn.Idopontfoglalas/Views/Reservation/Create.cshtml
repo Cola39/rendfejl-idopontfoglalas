@@ -24,6 +24,11 @@
             return now;
         }
 
+        function formatTimeForFlatpickr(date) {
+            const hours = String(date.getHours()).padStart(2, '0');
+            return `${hours}:00`;
+        }
+
         function initializeFlatpickr() {
             if (typeof flatpickr !== 'undefined') {
                 flatpickr("#StartTime", {
@@ -39,8 +44,18 @@
                     altInput: true,
                     altFormat: "Y. F d. H:00",
                     locale: "hu",
-                    minTime: "16:00",
-                    maxTime: "21:00"
+                    minTime: formatTimeForFlatpickr(getRoundedDate()),
+                    maxTime: "21:00",
+                    onChange: function (selectedDates, dateStr, instance) {
+                        const selectedDate = selectedDates[0];
+                        const selectedDay = selectedDate.toISOString().split('T')[0];
+
+                        if (selectedDay === today) {
+                            instance.set('minTime', formatTimeForFlatpickr(getRoundedDate()));
+                        } else {
+                            instance.set('minTime', "16:00");
+                        }
+                    }
                 });
             } else {
                 console.error("Flatpickr is not loaded!");

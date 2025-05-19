@@ -71,7 +71,7 @@ namespace Dnn.Bce.Dnn.Idopontfoglalas.Controllers
                         .OrderBy(r => r)
                         .Select(r => r.ToString("yyyy. MMMM dd. HH:mm", new System.Globalization.CultureInfo("hu-HU"))));
 
-                    ModelState.AddModelError("", $"A kiválasztott időpontra már nincs több szabad hely. Az alábbi időpontok foglaltak: {occupiedTimes}");
+                    ModelState.AddModelError("", $"Erre az időpontra már nem tudsz foglalni. Az időpontod vagy múltbeli, vagy pedig a kiválasztott időpontra már nincs több szabad hely. Az alábbi időpontok foglaltak: {occupiedTimes}");
                     return View("Create", reservation);
                 }
 
