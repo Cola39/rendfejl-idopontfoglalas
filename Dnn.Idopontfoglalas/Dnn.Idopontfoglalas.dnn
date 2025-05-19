@@ -43,7 +43,6 @@
           <desktopModule>
             <moduleName>Dnn.Idopontfoglalas</moduleName>
             <foldername>Dnn.Idopontfoglalas</foldername>
-            <businessControllerClass>Dnn.Bce.Dnn.Idopontfoglalas.Components.FeatureController</businessControllerClass>
             <supportedFeatures />
             <moduleDefinitions>
               <moduleDefinition>
