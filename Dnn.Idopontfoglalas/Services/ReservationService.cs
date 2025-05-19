@@ -43,6 +43,7 @@ namespace Dnn.Bce.Dnn.Idopontfoglalas.Services
                 repo.Insert(reservation);
             }
         }
+
         public int CountReservationsInHour(DateTime startTime, DateTime endTime)
         {
             using (var context = DataContext.Instance())
@@ -86,7 +87,6 @@ namespace Dnn.Bce.Dnn.Idopontfoglalas.Services
                 return grouped;
             }
         }
-
 
         public void CancelReservation(int id)
         {
