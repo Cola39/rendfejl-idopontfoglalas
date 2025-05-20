@@ -41,15 +41,6 @@ namespace Dnn.Bce.Dnn.Idopontfoglalas.Controllers
             }
         }
 
-        [HttpGet]
-        public ActionResult GetFullHours()
-        {
-            var service = new ReservationService();
-            var fullHours = service.GetFullyBookedHours();
-
-            return Json(fullHours, JsonRequestBehavior.AllowGet);
-        }
-
         [HttpPost]
         public ActionResult Create(ReservationEntity reservation)
         {
